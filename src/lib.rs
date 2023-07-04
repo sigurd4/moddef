@@ -31,7 +31,7 @@ use crate as moddef;
 
 #[macro_export]
 macro_rules! moddef {
-    ($vis:vis $(flat $(($vis_flat:vis))?)? mod $mod:ident $(for $($attribute:meta)+)? $(,$($more:tt)+)? $(,)?) => {
+    ($vis:vis $(flat $(($vis_flat:vis))?)? mod $mod:ident $(for $($attribute:meta)+)? $(,$($($more:tt)+)?)?) => {
         moddef::flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)*)?}
         $(
             $(
@@ -39,41 +39,41 @@ macro_rules! moddef {
             )*
         )?
         $vis mod $mod;
-        $(moddef::moddef!($($more)*);)?
+        $($(moddef::moddef!($($more)*);)?)?
     };
-    ($vis:vis $(flat $(($vis_flat:vis))?)? mod {$($mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
+    ($vis:vis $(flat $(($vis_flat:vis))?)? mod {$($mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
         moddef::flat_use!{$(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*}
         moddef::moddef!(
             $(
                 $vis mod $mods $(for $($attribute)*)?,
             )*
-            $($($more)*)?
+            $($($($more)*)?)?
         );
     };
-    ($(flat $(($vis_flat:vis))?)? mod {$($vis:vis $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
+    ($(flat $(($vis_flat:vis))?)? mod {$($vis:vis $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
         moddef::moddef!(
             $(
                 $vis mod $mods $(for $($attribute)*)?,
             )*
-            $($($more)*)?
+            $($($($more)*)?)?
         );
         moddef::flat_use!($(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*);
     };
 
-    ($vis:vis mod {$(flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
+    ($vis:vis mod {$(flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
         moddef::moddef!(
             $(
                 $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
             )*
-            $($($more)*)?
+            $($($($more)*)?)?
         );
     };
-    (mod {$($vis:vis flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
+    (mod {$($vis:vis flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
         moddef::moddef!(
             $(
                 $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
             )*
-            $($($more)*)?
+            $($($($more)*)?)?
         );
     };
 }
