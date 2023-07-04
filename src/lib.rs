@@ -27,21 +27,23 @@ macro_rules! flat_use {
     };
 }
 
+use crate as moddef;
+
 #[macro_export]
 macro_rules! moddef {
     ($vis:vis $(flat $(($vis_flat:vis))?)? mod $mod:ident $(for $($attribute:meta)+)? $(,$($more:tt)+)? $(,)?) => {
-        flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)*)?}
+        moddef::flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)*)?}
         $(
             $(
                 #[$attribute]
             )*
         )?
         $vis mod $mod;
-        $(moddef!($($more)*);)?
+        $(moddef::moddef!($($more)*);)?
     };
     ($vis:vis $(flat $(($vis_flat:vis))?)? mod {$($mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
-        flat_use!{$(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*}
-        moddef!(
+        moddef::flat_use!{$(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*}
+        moddef::moddef!(
             $(
                 $vis mod $mods $(for $($attribute)*)?,
             )*
@@ -49,17 +51,17 @@ macro_rules! moddef {
         );
     };
     ($(flat $(($vis_flat:vis))?)? mod {$($vis:vis $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
-        moddef!(
+        moddef::moddef!(
             $(
                 $vis mod $mods $(for $($attribute)*)?,
             )*
             $($($more)*)?
         );
-        flat_use!($(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*);
+        moddef::flat_use!($(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*);
     };
 
     ($vis:vis mod {$(flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
-        moddef!(
+        moddef::moddef!(
             $(
                 $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
             )*
@@ -67,7 +69,7 @@ macro_rules! moddef {
         );
     };
     (mod {$($vis:vis flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*} $(,$($more:tt)+)? $(,)?) => {
-        moddef!(
+        moddef::moddef!(
             $(
                 $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
             )*
