@@ -94,7 +94,7 @@ Flatness of a module is something i just made up, but it means that the inner me
 
 Here are some examples of valid module visibility descriptors:
 
-- `` Private
+- Private
     - Equivalent to `mod mymodule;`
 - `pub` Public
     - Equivalent to `pub mod mymodule;`
