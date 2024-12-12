@@ -68,7 +68,7 @@ I find it makes it a lot easier when i have a lot of modules with similar proper
 
 The schema used for the macro is like this:
 
-```
+```txt
 $MODULE_VISIBLITY mod {
     $MODULE_NAME,
     ...
@@ -117,9 +117,22 @@ In short: if you don't use the `flat` descriptor, any valid visiblity descriptor
 
 ## Module attributes
 
-This is just a comma separated list of attributes that will be appended within a `#[...]` before the module when the macro expands. I often use `cfg(test)` to tell the compiler to ignore the module when not compiling tests.
+This is just a whitespace-separated list of attributes that will be appended within a `#[...]` before the module when the macro expands. I often use `cfg(test)` to tell the compiler to ignore the module when not compiling tests.
 
 If attributes are to be given, a single `for` token must be applied after the module name.
+
+### Example
+
+```rust
+moddef::moddef!(
+    flat mod {
+        impl_macos for cfg(target_os = "macos"),
+        impl_linux for cfg(target_os = "linux") cfg(feature = "std")),
+        impl_windows for cfg(target_os = "windows"),
+        impl_linux_nostd for cfg(target_os = "linux") cfg(not(feature = "std")))
+    }
+);
+```
 
 ## Note
 
