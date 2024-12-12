@@ -121,7 +121,7 @@ This is just a comma separated list of attributes that will be appended within a
 
 If attributes are to be given, a single `for` token must be applied after the module name.
 
-# Note
+## Note
 
 If the macro fails to do anything given in the codumentation it is a bug. It can maybe do other things, like assign visibility to each module in a module-group seperately (at least it can right now, as of writing this), but those are really just implementation details that i needed to make the macro work. They're not specified features.
 
