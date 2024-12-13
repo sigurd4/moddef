@@ -1,7 +1,7 @@
 #![no_std]
 
 //! # moddef
-//! Organize your module declaration with this "simple" macro.
+//! Organize your module declaration with this simple macro.
 //! 
 //! ## Why?
 //! 
@@ -11,7 +11,7 @@
 //! 
 //! With `moddef`, you can write your module declarations like this:
 //! 
-//! ```rust
+//! ```ignore
 //! moddef::moddef!(
 //!     flat(pub) mod {
 //!         maybe_rtf_or_system,
@@ -40,7 +40,7 @@
 //! 
 //! Instead of this:
 //! 
-//! ```rust
+//! ```ignore
 //! mod maybe_rtf_or_system; pub use maybe_rtf_or_system::*;
 //! mod maybe_system; pub use maybe_system::*;
 //! mod rtf_or_system; pub use rtf_or_system::*;
@@ -125,7 +125,7 @@
 //! 
 //! ### Example
 //! 
-//! ```rust
+//! ```ignore
 //! moddef::moddef!(
 //!     flat mod {
 //!         impl_macos for cfg(target_os = "macos"),
@@ -175,7 +175,7 @@ macro_rules! flat_use {
 use crate as moddef;
 
 /// # moddef
-/// Organize your module declaration with this "simple" macro.
+/// Organize your module declaration with this simple macro.
 /// 
 /// ## Why?
 /// 
@@ -185,7 +185,7 @@ use crate as moddef;
 /// 
 /// With `moddef`, you can write your module declarations like this:
 /// 
-/// ```rust
+/// ```ignore
 /// moddef::moddef!(
 ///     flat(pub) mod {
 ///         maybe_rtf_or_system,
@@ -214,7 +214,7 @@ use crate as moddef;
 /// 
 /// Instead of this:
 /// 
-/// ```rust
+/// ```ignore
 /// mod maybe_rtf_or_system; pub use maybe_rtf_or_system::*;
 /// mod maybe_system; pub use maybe_system::*;
 /// mod rtf_or_system; pub use rtf_or_system::*;
@@ -299,7 +299,7 @@ use crate as moddef;
 /// 
 /// ### Example
 /// 
-/// ```rust
+/// ```ignore
 /// moddef::moddef!(
 ///     flat mod {
 ///         impl_macos for cfg(target_os = "macos"),
