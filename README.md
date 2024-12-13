@@ -1,5 +1,5 @@
 # moddef
-Organize your module declaration with this "simple" macro.
+Organize your module declaration with this simple macro.
 
 ## Why?
 
