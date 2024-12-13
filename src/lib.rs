@@ -138,7 +138,7 @@
 //! 
 //! ## Note
 //! 
-//! If the macro fails to do anything given in the codumentation it is a bug. It can maybe do other things, like assign visibility to each module in a module-group seperately (at least it can right now, as of writing this), but those are really just implementation details that i needed to make the macro work. They're not specified features.
+//! If the macro fails to do anything given in the documentation it is a bug. It can maybe do other things, like assign visibility to each module in a module-group seperately (at least it can right now, as of writing this), but those are really just implementation details that i needed to make the macro work. They're not specified features.
 //! 
 //! I hope this helps. I've used this macro for a long time, but i think other people should be able to try it. There's not much point in publishing code that only you yourself know how to use. Enjoy.
 
@@ -312,7 +312,7 @@ use crate as moddef;
 /// 
 /// ## Note
 /// 
-/// If the macro fails to do anything given in the codumentation it is a bug. It can maybe do other things, like assign visibility to each module in a module-group seperately (at least it can right now, as of writing this), but those are really just implementation details that i needed to make the macro work. They're not specified features.
+/// If the macro fails to do anything given in the documentation it is a bug. It can maybe do other things, like assign visibility to each module in a module-group seperately (at least it can right now, as of writing this), but those are really just implementation details that i needed to make the macro work. They're not specified features.
 /// 
 /// I hope this helps. I've used this macro for a long time, but i think other people should be able to try it. There's not much point in publishing code that only you yourself know how to use. Enjoy.
 #[macro_export]
