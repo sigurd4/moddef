@@ -1,6 +1,6 @@
 [package]
 name = "moddef"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 license = "MIT"
 description = "Macros for convenient nested module structure declaration"
