@@ -5,6 +5,14 @@ edition = "2021"
 license = "MIT"
 description = "Macro for convenient module declaration. Each module can be put in a group, and visibility can be applied to the whole group with ease."
 repository = "https://github.com/sigurd4/moddef"
+keywords = ["modules", "groups", "nested", "declaration"]
+categories = ["accessibility", "development-tools", "no-std::no-alloc", "rust-patterns"]
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[badges]
+maintainence = {status = "as-is"}
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
