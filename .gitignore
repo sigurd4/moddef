@@ -11,3 +11,6 @@ Cargo.lock
 
 # Rust-analyzer panics
 rust-ice-*.txt
+rustc-ice-*.txt
+
+output.png

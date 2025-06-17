@@ -20,6 +20,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       name: "Checkout"
+    - name: Install packages
+      run: sudo apt -y install libfontconfig1-dev libgsl-dev
     - uses: dtolnay/rust-toolchain@nightly
       with:
         profile: "minimal"

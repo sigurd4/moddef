@@ -156,18 +156,18 @@ macro_rules! flat_use {
                 )*
             )?
             #[allow(unused)]
-            $vis_flat use $mod::*;
+            $vis_flat use self::$mod::*;
         )*
     };
     (() $($mod:ident $(for $($attribute:meta)+)?),* $(,)?) => {
         $(
-            #[allow(unused)]
             $(
                 $(
                     #[$attribute]
                 )*
             )?
-            use $mod::*;
+            #[allow(unused)]
+            use self::$mod::*;
         )*
     };
 }
@@ -317,8 +317,11 @@ use crate as moddef;
 /// I hope this helps. I've used this macro for a long time, but i think other people should be able to try it. There's not much point in publishing code that only you yourself know how to use. Enjoy.
 #[macro_export]
 macro_rules! moddef {
+    () => {
+
+    };
     ($vis:vis $(flat $(($vis_flat:vis))?)? mod $mod:ident $(for $($attribute:meta)+)? $(,$($($more:tt)+)?)?) => {
-        moddef::flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)*)?}
+        moddef::flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)+)?}
         $(
             $(
                 #[$attribute]
@@ -327,38 +330,89 @@ macro_rules! moddef {
         $vis mod $mod;
         $($(moddef::moddef!($($more)*);)?)?
     };
-    ($vis:vis $(flat $(($vis_flat:vis))?)? mod {$($mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
-        moddef::flat_use!{$(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*}
+    ($vis:vis $(flat $(($vis_flat:vis))?)? mod $mod:ident $(for $($attribute:meta)+)? {$($block:tt)*} $(,$($($more:tt)+)?)?) => {
+        moddef::flat_use!{$(($($vis_flat)?))? $mod $(for $($attribute)+)?}
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
+        $vis mod $mod
+        {
+            $($block)*
+        }
+        $($(moddef::moddef!($($more)*);)?)?
+    };
+    ($vis:vis $(flat $(($vis_flat:vis))?)? mod $(for $($attribute:meta)+)? {$($mods:ident $(for $($attributes:meta)+)? $({$($block:tt)*})?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
+        moddef::flat_use!{$(($($vis_flat)?))? $($mods $(for $($attributes)*)?),*}
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
         moddef::moddef!(
             $(
-                $vis mod $mods $(for $($attribute)*)?,
+                $vis mod $mods $(for $($attributes)*)? $({$($block)*})?,
             )*
+        );
+        moddef::moddef!(
             $($($($more)*)?)?
         );
     };
-    ($(flat $(($vis_flat:vis))?)? mod {$($vis:vis $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+    ($(flat $(($vis_flat:vis))?)? mod $(for $($attribute:meta)+)? {$($vis:vis $mods:ident $(for $($attributes:meta)+)? $({$($block:tt)*})?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
         moddef::moddef!(
             $(
-                $vis mod $mods $(for $($attribute)*)?,
+                $vis mod $mods $(for $($attributes)*)? $({$($block)*})?,
             )*
+        );
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
+        moddef::flat_use!($(($($vis_flat)?))? $($mods $(for $($attributes)*)?),*);
+        moddef::moddef!(
             $($($($more)*)?)?
         );
-        moddef::flat_use!($(($($vis_flat)?))? $($mods $(for $($attribute)*)?),*);
     };
 
-    ($vis:vis mod {$(flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+    ($vis:vis mod $(for $($attribute:meta)+)? {$(flat $(($vis_flat:vis))? $mods:ident $(for $($attributes:meta)+)? $({$($block:tt)*})?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
         moddef::moddef!(
             $(
-                $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
+                $vis flat $(($vis_flat))? mod $mods $(for $($attributes)*)? $({$($block)*})?,
             )*
+        );
+        moddef::moddef!(
             $($($($more)*)?)?
         );
     };
-    (mod {$($vis:vis flat $(($vis_flat:vis))? $mods:ident $(for $($attribute:meta)+)?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+    (mod $(for $($attribute:meta)+)? {$($vis:vis flat $(($vis_flat:vis))? $mods:ident $(for $($attributes:meta)+)? $({$($block:tt)*})?),*$(,)?} $(,$($($more:tt)+)?)?) => {
+        $(
+            $(
+                #[$attribute]
+            )*
+        )?
         moddef::moddef!(
             $(
-                $vis flat $(($vis_flat))? mod $mods $(for $($attribute)*)?,
+                $vis flat $(($vis_flat))? mod $mods $(for $($attributes)*)? $({$($block)*})?,
             )*
+        );
+        moddef::moddef!(
             $($($($more)*)?)?
         );
     };
@@ -368,11 +422,18 @@ moddef!(
     pub mod {
         flat test for cfg(test)
     },
-    flat mod {
-        pub(crate) test2 for cfg(test) allow(unused)
+    flat mod for cfg(test) {
+        pub(crate) test2 for allow(unused),
+        test3 {
+            #[allow(unused)]
+            pub(crate) use super::TEST3;
+        }
     }
 );
 
 #[allow(unused)]
 #[cfg(test)]
 const T: u8 = TEST;
+#[allow(unused)]
+#[cfg(test)]
+const TEST3: i8 = 0;
