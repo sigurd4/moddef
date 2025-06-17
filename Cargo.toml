@@ -1,6 +1,6 @@
 [package]
 name = "moddef"
-version = "0.2.6"
+version = "0.3.0"
 edition = "2021"
 license = "MIT"
 description = "Macro for convenient module declaration. Each module can be put in a group, and visibility can be applied to the whole group with ease."
